@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block Inicio %} inicio {% endblock %}
+
+{% block contenido %} 
+
+<div class="card">
+    <div class="card-header">Header</div>
+    <a
+        name=""
+        id=""
+        class="btn btn-primary btn-sm"
+        href="{% url 'crear' %}"
+        role="button"
+        >añadir trabajador</a>
+    
+    <div class="card-body">
+        <h4 class="card-title">Empleados</h4>
+        <div class="mb-3">
+            <input type="text" class="form-control" id="searchInput" placeholder="Buscar empleado...">
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">NOMBRE</th>
+                        <th scope="col">RUT</th>
+                        <th scope="col">CARGO</th>
+                        <th scope="col">ACCIONES</th>
+                    </tr>
+                </thead>
+                <tbody id="employeeTable">
+
+                    {% for trabajador in trabajadores %}
+                    <tr>
+                        <td>{{ trabajador.id }}</td>
+                        <td>{{ trabajador.nombre }}</td>
+                        <td>{{ trabajador.rut }}</td>
+                        <td>{{ trabajador.rol}}</td>
+                        <td><a
+                            name=""
+                            id=""
+                            class="btn btn-info"
+                            href="{% url 'editar' trabajador.id %}"
+                            role="button"
+                            >editar</a>
+                            <a
+                            name=""
+                            id=""
+                            class="btn btn-danger"
+                            href="{% url 'eliminar' trabajador.id %}"
+                            role="button"
+                            >borrar</a>
+                         </td>
+                    </tr>
+                    {% endfor %}
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('searchInput').addEventListener('keyup', function() {
+        var input, filter, table, tr, td, i, j, txtValue;
+        input = document.getElementById('searchInput');
+        filter = input.value.toUpperCase();
+        table = document.getElementById('employeeTable');
+        tr = table.getElementsByTagName('tr');
+        for (i = 0; i < tr.length; i++) {
+            tr[i].style.display = 'none';
+            td = tr[i].getElementsByTagName('td');
+            for (j = 0; j < td.length; j++) {
+                if (td[j]) {
+                    txtValue = td[j].textContent || td[j].innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = '';
+                        break;
+                    }
+                }
+            }
+        }
+    });
+</script>
+
+{% endblock %}
