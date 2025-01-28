@@ -1,3 +1,4 @@
+from operator import add
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
@@ -6,15 +7,11 @@ from django.db.models.signals import post_save
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile', verbose_name='Usuario')
-    imagen = models.ImageField(default='user/usuario_defecto.jpg', upload_to='user/', verbose_name='Imagen de perfil')
-    nombre = models.CharField(max_length=50)
-    apellido = models.CharField(max_length=50)
-    email = models.EmailField(max_length=50, verbose_name='Correo electrónico')
-    telefono = models.CharField(max_length=20)
-    pais = models.CharField(max_length=50)
-    ciudad = models.CharField(max_length=50, null=True, blank=True, verbose_name='Ciudad')
-    region = models.CharField(max_length=50, null=True, blank=True, verbose_name='Región')
-    direccion = models.CharField(max_length=150,null=True, blank=True, verbose_name='Dirección')
+    image = models.ImageField(default='user/usuario_defecto.jpg', upload_to='user/', verbose_name='Imagen de perfil')
+    address = models.CharField(max_length=50, null=True, blank=True, verbose_name='Dirección')
+    location= models.CharField(max_length=50, null=True, blank=True, verbose_name='Localidad')
+    phone = models.CharField(max_length=15, null=True, blank=True, verbose_name='Teléfono')
+   
 
     class Meta:
         verbose_name = 'Perfil'

@@ -51,3 +51,8 @@ def eliminar_t(request,id):
     trabajador.delete()
     
     return redirect('superad')
+def pricing (request):
+    return render(request, 'paginas/pricing.html')
+
+def base_logins(request):
+    return render(request, 'logins/base_logins.html')
