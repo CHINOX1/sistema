@@ -1,8 +1,10 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login as auth_login
-from .models import Trabajador
-from .forms import superadForm
+from .models import Trabajador, PermisosUsuario,UsuarioRegistrado
+from .forms import superadForm, UsuarioForm
+from django.shortcuts import render
+from django.contrib.auth.models import User
 # Create your views here.
 
 
@@ -55,4 +57,37 @@ def pricing (request):
     return render(request, 'paginas/pricing.html')
 
 def base_logins(request):
-    return render(request, 'logins/base_logins.html')
+    return render(request, 'central.html')
+
+
+def crear_usuario(request):
+    if request.method == 'POST':
+        print("Método POST recibido")
+        form = UsuarioForm(request.POST)
+        if form.is_valid():
+            print("Formulario válido")
+            usuario_registrado = form.save(commit=False)
+            usuario_registrado.save()
+            # Asignar permisos al usuario registrado
+            for permiso in form.cleaned_data['permisos']:
+                PermisosUsuario.objects.create(usuario=usuario_registrado, permiso=permiso)
+            print("Usuario guardado correctamente")
+            return redirect('lista_usuarios')
+        else:
+            print("Formulario no válido")
+            print(form.errors)
+    else:
+        print("Método GET recibido")
+        form = UsuarioForm()
+    return render(request, 'logins/crear_usuario.html', {'form': form})
+
+def lista_usuarios(request):
+    usuarios = UsuarioRegistrado.objects.all()
+    usuarios_con_permisos = []
+    for usuario in usuarios:
+        permisos = PermisosUsuario.objects.filter(usuario=usuario)
+        usuarios_con_permisos.append({
+            'usuario': usuario,
+            'permisos': permisos
+        })
+    return render(request, 'logins/lista_usuarios.html', {'usuarios_con_permisos': usuarios_con_permisos})

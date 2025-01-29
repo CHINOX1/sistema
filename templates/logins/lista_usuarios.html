@@ -1,0 +1,69 @@
+{% extends 'central.html' %}
+
+{% block title %}Lista de Usuarios{% endblock %}
+
+{% block css-page %}
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+    th {
+        background-color: #333;
+        color: white;
+        text-align: left;
+    }
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+    tr:hover {
+        background-color: #ddd;
+    }
+    td ul {
+        list-style-type: none;
+        padding: 0;
+    }
+    td ul li {
+        background-color: #f9f9f9;
+        margin: 2px 0;
+        padding: 5px;
+        border: 1px solid #ddd;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<h2>Lista de Usuarios</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Permisos</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in usuarios_con_permisos %}
+        <tr>
+            <td>{{ item.usuario.username }}</td>
+            <td>{{ item.usuario.email }}</td>
+            <td>{{ item.usuario.first_name }}</td>
+            <td>{{ item.usuario.last_name }}</td>
+            <td>
+                <ul>
+                    {% for permiso in item.permisos %}
+                    <li>{{ permiso.permiso.nombre }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

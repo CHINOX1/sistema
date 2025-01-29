@@ -12,7 +12,9 @@ urlpatterns = [
     path('eliminar/<int:id>',views.eliminar_t,name='eliminar'),
     path('pricing',views.pricing,name='pricing'),
     path('base',views.base_logins,name='base'),
-]
+    path('crear_usuario',views.crear_usuario,name='crear_usuario'),
+    path('lista_usuarios',views.lista_usuarios,name='lista_usuarios'),
+]   
 
 if settings.DEBUG:
     from django.conf.urls.static import static

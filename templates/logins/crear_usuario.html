@@ -1,0 +1,59 @@
+{% extends "central.html" %} 
+
+{% block css-page %}
+<style>
+    .form-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+    .form-container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .form-container form {
+        display: flex;
+        flex-direction: column;
+    }
+    .form-container form .form-group {
+        margin-bottom: 15px;
+    }
+    .form-container form .form-group label {
+        font-weight: bold;
+    }
+    .form-container form .form-group input,
+    .form-container form .form-group select,
+    .form-container form .form-group textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+    .form-container form button {
+        padding: 10px;
+        background-color: #333;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .form-container form button:hover {
+        background-color: #555;
+    }
+</style>
+{% endblock css-page %}
+
+{% block content %}
+<div class="form-container">
+    <h2>Crear nuevo usuario</h2> 
+
+    <form method="post">
+        {% csrf_token %} 
+        {{ form.as_p }} 
+        <button type="submit">Crear usuario</button> 
+    </form>
+</div>
+{% endblock content %}
