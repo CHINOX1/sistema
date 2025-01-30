@@ -70,14 +70,14 @@
 {% block content %}
 <div class="container mt-5">
     <div class="header">
-        <h2>Nuevo Trabajador Empresa: {{ empresa.nombre }}</h2>
+        <h2>Nuevo Supervisor : {{ empresa.nombre }}</h2>
     </div>
     <form method="post">
         {% csrf_token %}
         <div class="form-group">
             {{ form.as_p }}
         </div>
-        <button type="submit" class="btn">Crear usuario</button>
+        <button type="submit" class="btn">Crear Supervisor</button>
     </form>
 </div>
 {% endblock %}

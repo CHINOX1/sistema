@@ -1,59 +1,83 @@
-{% extends "central.html" %} 
+{% extends "central.html" %}
+{% load static %}
 
 {% block css-page %}
 <style>
-    .form-container {
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+    }
+    .container {
         max-width: 600px;
         margin: 0 auto;
         padding: 20px;
-        background-color: #f9f9f9;
-        border: 1px solid #ddd;
-        border-radius: 5px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
-    .form-container h2 {
+    .header {
         text-align: center;
         margin-bottom: 20px;
     }
-    .form-container form {
+    .header h2 {
+        margin: 0;
+        font-size: 1.75em;
+        color: #333;
+    }
+    form {
         display: flex;
         flex-direction: column;
     }
-    .form-container form .form-group {
+    form .form-group {
         margin-bottom: 15px;
     }
-    .form-container form .form-group label {
+    form .form-group label {
+        margin-bottom: 5px;
         font-weight: bold;
+        color: #555;
     }
-    .form-container form .form-group input,
-    .form-container form .form-group select,
-    .form-container form .form-group textarea {
-        width: 100%;
+    form .form-group input,
+    form .form-group select,
+    form .form-group textarea {
         padding: 10px;
         border: 1px solid #ddd;
-        border-radius: 5px;
+        border-radius: 4px;
+        font-size: 1em;
+        width: 100%;
     }
-    .form-container form button {
-        padding: 10px;
-        background-color: #333;
-        color: white;
-        border: none;
-        border-radius: 5px;
+    form .form-group input[type="checkbox"] {
+        width: auto;
+        margin-right: 10px;
+    }
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        border-radius: 4px;
+        text-decoration: none;
+        color: #fff;
+        font-size: 1em;
+        background-color: #3498db;
+        text-align: center;
         cursor: pointer;
+        margin-top: 10px;
     }
-    .form-container form button:hover {
-        background-color: #555;
+    .btn:hover {
+        background-color: #2980b9;
     }
 </style>
-{% endblock css-page %}
+{% endblock %}
 
 {% block content %}
-<div class="form-container">
-    <h2>Crear nuevo usuario</h2> 
-
+<div class="container mt-5">
+    <div class="header">
+        <h2>Nuevo Trabajador Empresa: {{ empresa.nombre }}</h2>
+    </div>
     <form method="post">
-        {% csrf_token %} 
-        {{ form.as_p }} 
-        <button type="submit">Crear usuario</button> 
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.as_p }}
+        </div>
+        <button type="submit" class="btn">Crear usuario</button>
     </form>
 </div>
-{% endblock content %}
+{% endblock %}

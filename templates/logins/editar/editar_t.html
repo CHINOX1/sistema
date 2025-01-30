@@ -1,12 +1,9 @@
+<!-- filepath: /c:/Users/facil/Desktop/sistema/templates/logins/editar/editar_t.html -->
 {% extends "central.html" %}
 {% load static %}
 
 {% block css-page %}
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f8f9fa;
-    }
     .container {
         max-width: 600px;
         margin: 0 auto;
@@ -70,14 +67,21 @@
 {% block content %}
 <div class="container mt-5">
     <div class="header">
-        <h2>Nuevo Trabajador Empresa: {{ empresa.nombre }}</h2>
+        <h2>Editar Trabajador</h2>
     </div>
-    <form method="post">
+    {% if messages %}
+        <div class="alert alert-success">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+    {% endif %}
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="form-group">
-            {{ form.as_p }}
+            {{ formulario.as_p }}
         </div>
-        <button type="submit" class="btn">Crear usuario</button>
+        <button type="submit" class="btn">Guardar cambios</button>
     </form>
 </div>
 {% endblock %}

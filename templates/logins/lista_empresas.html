@@ -1,0 +1,25 @@
+{% extends "central.html" %}
+
+{% block css-page %}
+{% load static %}
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"  href="{% static 'bootstrap\css\bootstrap.min.css'%}">
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Lista de Empresas</h2>
+    <ul class="list-group">
+        {% for empresa in empresas %}
+        <li class="list-group-item">
+            <a href="{% url 'ver_supervisores_trabajadores' empresa.id %}">{{ empresa.nombre }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
+
+{% block js-page %}
+<!-- Bootstrap JS -->
+<script src="{% static 'bootstrap/js/bootstrap.bundle.min.js '%}"></script>
+{% endblock %}

@@ -4,6 +4,9 @@ from pydoc import describe
 from django.db import models
 from django.contrib.auth.models import User, Group
 from django.db.models.signals import post_save
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
+
 
 # Create your models here.
 
@@ -24,7 +27,7 @@ class Profile(models.Model):
         return self.user.username
    
 def create_user_profile(sender, instance, created, **kwargs):
-    if created:
+   if created:
         Profile.objects.create(user=instance)
 
 def save_user_profile(sender, instance, **kwargs):
@@ -33,11 +36,53 @@ def save_user_profile(sender, instance, **kwargs):
 post_save.connect(create_user_profile, sender=User)
 post_save.connect(save_user_profile, sender=User)
 
+class Trabajador(models.Model):
+    
+    id = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=50)
+    rut = models.CharField(max_length=10)
+    rol = models.CharField(max_length=50) 
+
+
+
+    def __str__(self):
+       fila = self.nombre + ' -- ' + self.rut + ' -- ' + self.rol 
+       return fila
+   
+class AdminRegistrado(models.Model):
+    username = models.CharField(max_length=150, unique=True)
+    password = models.CharField(max_length=150)
+    first_name = models.CharField(max_length=30, blank=True)
+    last_name = models.CharField(max_length=30, blank=True)
+    fecha_registro = models.DateTimeField(auto_now_add=True)
+
+    
+    def __str__(self):
+        return self.username
+
+
 class Permiso(models.Model):
     nombre = models.CharField(max_length=50, unique=True)
     descripcion = models.CharField(max_length=100, blank=True, null=True) 
     def __str__(self):
         return self.nombre
+    
+class Empresas(models.Model):
+    nombre = models.CharField(max_length=50, unique=True)
+    descripcion = models.CharField(max_length=100, blank=True, null=True)
+    supervisores = models.ManyToManyField('SupervisorRegistrado', through='EmpresasSupervisores')
+    trabajadores = models.ManyToManyField('UsuarioRegistrado', through='EmpresasTrabajadores')
+
+    def __str__(self):
+        return self.nombre
+    
+class PermisosSupervisor(models.Model):
+    supervisor = models.ForeignKey('SupervisorRegistrado', on_delete=models.CASCADE)
+    permiso = models.ForeignKey(Permiso, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('supervisor', 'permiso')    
+
     
 class PermisosUsuario(models.Model):
     usuario = models.ForeignKey('UsuarioRegistrado', on_delete=models.CASCADE)
@@ -64,18 +109,30 @@ class UsuarioRegistrado(models.Model):
 
     def __str__(self):
         return self.username
-
-class Trabajador(models.Model):
-    
-    id = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=50)
-    rut = models.CharField(max_length=10)
-    rol = models.CharField(max_length=50) 
-
-
+class SupervisorRegistrado(models.Model):
+    username = models.CharField(max_length=150, unique=True)
+    email = models.EmailField(unique=True)
+    first_name = models.CharField(max_length=30, blank=True)
+    last_name = models.CharField(max_length=30, blank=True)
+    permisos = models.ManyToManyField(Permiso, through=PermisosSupervisor)
+    fecha_registro = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        fila = self.nombre + ' -- ' + self.rut + ' -- ' + self.rol 
-        return fila
-   
+        return self.username
+    
+class EmpresasSupervisores(models.Model):
+    empresa = models.ForeignKey(Empresas, on_delete=models.CASCADE)
+    supervisor = models.ForeignKey(SupervisorRegistrado, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('empresa', 'supervisor')
+
+class EmpresasTrabajadores(models.Model):
+    empresa = models.ForeignKey(Empresas, on_delete=models.CASCADE)
+    trabajador = models.ForeignKey(UsuarioRegistrado, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('empresa', 'trabajador')
+
+
     

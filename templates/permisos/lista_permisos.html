@@ -1,0 +1,35 @@
+{% extends "central.html" %}
+
+{% block css-page %}
+{% load static %}
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"  href="{% static 'bootstrap\css\bootstrap.min.css'%}">
+{% endblock %}
+
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Lista de Permisos</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nombre del Permiso</th>
+                <th>Descripción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for permiso in permisos %}
+            <tr>
+                <td>{{ permiso.nombre }}</td>
+                <td>{{ permiso.descripcion }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block js-page %}
+<!-- Bootstrap JS -->
+<script src="{% static 'bootstrap/js/bootstrap.bundle.min.js '%}"></script>
+{% endblock %}

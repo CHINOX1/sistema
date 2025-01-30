@@ -1,0 +1,155 @@
+{% extends "central.html" %}
+{% load static %}
+
+{% block css-page %}
+<style>
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .header h2 {
+        margin: 0;
+        font-size: 2em;
+        color: #333;
+    }
+    .header p {
+        font-size: 1.2em;
+        color: #666;
+    }
+    .table-container {
+        margin-top: 20px;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    table, th, td {
+        border: 1px solid #ddd;
+    }
+    th, td {
+        padding: 15px;
+        text-align: left;
+    }
+    th {
+        background-color: #f2f2f2;
+        color: #333;
+    }
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+    tr:hover {
+        background-color: #f1f1f1;
+    }
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        border-radius: 4px;
+        text-decoration: none;
+        color: #fff;
+        font-size: 1em;
+        background-color: #3498db;
+        text-align: center;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+    .btn:hover {
+        background-color: #2980b9;
+    }
+    .btn-danger {
+        background-color: #e74c3c;
+    }
+    .btn-danger:hover {
+        background-color: #c0392b;
+    }
+    .btn-warning {
+        background-color: #f39c12;
+    }
+    .btn-warning:hover {
+        background-color: #e67e22;
+    }
+    .btn-secondary {
+        background-color: #95a5a6;
+    }
+    .btn-secondary:hover {
+        background-color: #7f8c8d;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="header">
+        <h2>Detalles de la Empresa: {{ empresa.nombre }}</h2>
+        <p>{{ empresa.descripcion }}</p>
+    </div>
+    <div class="table-container">
+        <h3>Supervisores</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre de Usuario</th>
+                    <th>Email</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for relacion in supervisores %}
+                <tr>
+                    <td>{{ relacion.supervisor.username }}</td>
+                    <td>{{ relacion.supervisor.email }}</td>
+                    <td>{{ relacion.supervisor.first_name }}</td>
+                    <td>{{ relacion.supervisor.last_name }}</td>
+                    <td>
+                        <a href="{% url 'editar_supervisor' relacion.supervisor.id %}" class="btn btn-warning btn-sm">Modificar</a>
+                        <a href="{% url 'eliminar_supervisor' relacion.supervisor.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="table-container">
+        <h3>Trabajadores</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre de Usuario</th>
+                    <th>Email</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for relacion in trabajadores %}
+                <tr>
+                    <td>{{ relacion.trabajador.username }}</td>
+                    <td>{{ relacion.trabajador.email }}</td>
+                    <td>{{ relacion.trabajador.first_name }}</td>
+                    <td>{{ relacion.trabajador.last_name }}</td>
+                    <td>
+                        <a href="{% url 'editar_t' relacion.trabajador.id %}" class="btn btn-warning btn-sm">Modificar</a>
+                        <a href="{% url 'eliminar_t' relacion.trabajador.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center">
+        <a href="{% url 'lista_empresas_detalles' %}" class="btn btn-secondary">Volver</a>
+    </div>
+</div>
+{% endblock %}

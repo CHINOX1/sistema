@@ -1,0 +1,85 @@
+{% extends "central.html" %}
+{% load static %}
+
+{% block css-page %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+    }
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    .header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+    .empresa-card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+    }
+    .empresa-card h5 {
+        margin: 0 0 10px;
+        font-size: 1.5em;
+        color: #333;
+    }
+    .empresa-card p {
+        margin: 0 0 5px;
+        color: #555;
+    }
+    .btn-group {
+        margin-top: 15px;
+        display: flex;
+        gap: 10px;
+    }
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        border-radius: 4px;
+        text-decoration: none;
+        color: #fff;
+        font-size: 0.875em;
+    }
+    .btn-info {
+        background-color: #17a2b8;
+    }
+    .btn-danger {
+        background-color: #e74c3c;
+    }
+    .btn-primary {
+        background-color: #3498db;
+    }
+    .btn-secondary {
+        background-color: #95a5a6;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="header">
+        <h2>Lista de Empresas con Detalles</h2>
+    </div>
+    <div class="empresa-list">
+        {% for detalle in empresas_detalles %}
+        <div class="empresa-card">
+            <h5>{{ detalle.empresa.nombre }}</h5>
+            <p>Supervisores: {{ detalle.num_supervisores }}</p>
+            <p>Trabajadores: {{ detalle.num_trabajadores }}</p>
+            <div class="btn-group">
+                <a href="{% url 'ver_supervisores_trabajadores' detalle.empresa.id %}" class="btn btn-info">Ver detalles</a>
+                <a href="{% url 'eliminar_empresa' detalle.empresa.id %}" class="btn btn-danger">Eliminar</a>
+                <a href="{% url 'añadir_trabajador' detalle.empresa.id %}" class="btn btn-primary">Añadir Trabajador</a>
+                <a href="{% url 'añadir_supervisor' detalle.empresa.id %}" class="btn btn-secondary">Añadir Supervisor</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
